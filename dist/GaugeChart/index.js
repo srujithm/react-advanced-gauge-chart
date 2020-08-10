@@ -143,7 +143,9 @@ GaugeChart.defaultProps = {
   hideText: false,
   animate: true,
   animDelay: 500,
-  formatTextValue: null
+  formatTextValue: null,
+  fontSize: null,
+  animateDuration: 3000
 };
 GaugeChart.propTypes = {
   id: _propTypes.default.string.isRequired,
@@ -162,7 +164,9 @@ GaugeChart.propTypes = {
   needleBaseColor: _propTypes.default.string,
   hideText: _propTypes.default.bool,
   animate: _propTypes.default.bool,
-  formatTextValue: _propTypes.default.func
+  formatTextValue: _propTypes.default.func,
+  fontSize: _propTypes.default.string,
+  animateDuration: _propTypes.default.number
 }; // This function update arc's datas when component is mounting or when one of arc's props is updated
 
 var setArcData = function setArcData(props, nbArcsToDisplay, colorArray, arcData) {
@@ -255,7 +259,7 @@ var drawNeedle = function drawNeedle(resize, prevProps, props, width, needle, co
 
 
   if (!resize && animate) {
-    needle.current.transition().delay(props.animDelay).ease(_d.easeElastic).duration(3000).tween('progress', function () {
+    needle.current.transition().delay(props.animDelay).ease(_d.easeElastic).duration(props.animateDuration).tween('progress', function () {
       var currentPercent = (0, _d.interpolateNumber)(prevPercent, percent);
       return function (percentOfPercent) {
         var progress = currentPercent(percentOfPercent);
@@ -283,17 +287,64 @@ var calculateRotation = function calculateRotation(percent, outerRadius, width) 
 
 var percentToRad = function percentToRad(percent) {
   return percent * Math.PI;
-}; //Adds text undeneath the graft to display which percentage is the current one
-
+};
 
 var addText = function addText(percentage, props, outerRadius, width, g) {
   var formatTextValue = props.formatTextValue;
   var textPadding = 20;
-  var text = formatTextValue ? formatTextValue(floatingNumber(percentage)) : floatingNumber(percentage) + '%';
-  g.current.append('g').attr('class', 'text-group').attr('transform', "translate(".concat(outerRadius.current, ", ").concat(outerRadius.current / 2 + textPadding, ")")).append('text').text(text) // this computation avoid text overflow. When formatted value is over 10 characters, we should reduce font size
-  .style('font-size', function () {
-    return "".concat(width.current / 11 / (text.length > 10 ? text.length / 10 : 1), "px");
-  }).style('fill', props.textColor).attr('class', 'percent-text');
+  var text = "";
+
+  if (!props.previousValue) {
+    text = formatTextValue ? formatTextValue(floatingNumber(percentage)) : floatingNumber(percentage) + '%';
+    g.current.append('g').attr('class', 'text-group').attr('transform', "translate(".concat(outerRadius.current, ", ").concat(outerRadius.current / 2 + textPadding, ")")).append('text').text(text) // this computation avoid text overflow. When formatted value is over 10 characters, we should reduce font size
+    .style('font-size', function () {
+      return "".concat(width.current / 11 / (text.length > 10 ? text.length / 10 : 1), "px");
+    }).style('fill', props.textColor).attr('class', 'percent-text');
+  } else {
+    var diff = parseFloat(floatingNumber(percentage) - floatingNumber(props.previousValue)).toFixed(2);
+    text = floatingNumber(percentage) + "%";
+    var newElem = g.current.append('g').attr('class', 'text-group');
+    newElem.append('text').text(text) // this computation avoid text overflow. When formatted value is over 10 characters, we should reduce font size
+    .attr('transform', "translate(".concat(outerRadius.current, ", ").concat(outerRadius.current / 2 + textPadding, ")")).style('font-size', function () {
+      return "".concat(width.current / 11 / (text.length > 3 ? text.length / 4 : 1), "px");
+    }).style('fill', props.textColor).attr('class', 'percent-text');
+    var icon = '';
+
+    if (diff < 0) {
+      icon = "\uF063";
+    } else if (diff > 0) {
+      icon = "\uF062";
+    }
+
+    if (icon !== '') {
+      newElem.append("text").attr('font-family', 'FontAwesome').attr("class", "fa").attr('transform', "translate(".concat(outerRadius.current + width.current / 11 / (text.length > 10 ? text.length / 10 : 1), ", ").concat(outerRadius.current / 2 + textPadding, ")")).attr("font-size", function () {
+        return "".concat(width.current / 11 / (text.length > 3 ? text.length / 2 : 2), "px");
+      }).attr("fill", function () {
+        var newColor = props.textColor;
+
+        if (diff < 0) {
+          return "red";
+        } else if (diff > 0) {
+          return "green";
+        }
+
+        return newColor;
+      }).text(icon);
+      newElem.append('text').text(Math.abs(diff)).attr('transform', "translate(".concat(outerRadius.current + width.current / 11 / (text.length > 10 ? text.length / 10 : 1) + width.current / 11 / (text.length > 10 ? text.length / 10 * 2 : 1 * 2), ", ").concat(outerRadius.current / 2 + textPadding, ")")).style('font-size', function () {
+        return "".concat(width.current / 11 / (text.length > 3 ? text.length / 2 : 2), "px");
+      }).style('fill', function () {
+        var newColor = props.textColor;
+
+        if (diff < 0) {
+          return "red";
+        } else if (diff > 0) {
+          return "green";
+        }
+
+        return newColor;
+      });
+    }
+  }
 };
 
 var floatingNumber = function floatingNumber(value) {
