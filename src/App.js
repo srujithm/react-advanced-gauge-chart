@@ -27,7 +27,7 @@ const App = () => {
       <Container>
         <Row>
           <Col xs={12} lg={{ offset: 2, span: 8 }}>
-            <h1>React Gauge Chart Demo</h1>
+            <h1>React Advanced Gauge Chart Demo</h1>
           </Col>
         </Row>
         <Row>
@@ -132,7 +132,42 @@ const App = () => {
               arcPadding={0.02}
             />
           </Col>
-        </Row>          
+          <Col xs={12} lg={6}>
+            <h6>GaugeChart with comparison (value decreased)</h6>
+            <GaugeChart
+              id="gauge-chart10"
+							style={chartStyle}
+              colors={['#5BE12C', '#F5CD19', '#EA4228']}
+              percent={0.37}
+              arcPadding={0.02}
+              previousValue={0.45}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={12} lg={6}>
+            <h6>GaugeChart with comparison (value increased)</h6>
+            <GaugeChart
+              id="gauge-chart11"
+							style={chartStyle}
+              colors={['#5BE12C', '#F5CD19', '#EA4228']}
+              percent={0.37}
+              arcPadding={0.02}
+              previousValue={0.34}
+            />
+          </Col>
+          <Col xs={12} lg={6}>
+            <h6>GaugeChart with comparison (no change)</h6>
+            <GaugeChart
+              id="gauge-chart12"
+							style={chartStyle}
+              colors={['#5BE12C', '#F5CD19', '#EA4228']}
+              percent={0.37}
+              arcPadding={0.02}
+              previousValue={0.37}
+            />
+          </Col>
+        </Row>
       </Container>
     </>
   )

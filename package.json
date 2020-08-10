@@ -4,7 +4,7 @@
   "main": "dist/index",
   "module": "dist/index",
   "typings": "dist/index",
-  "homepage": "https://martin36.github.io/react-gauge-chart/",
+  "homepage": "https://srujithm.github.io/react-advanced-gauge-chart/",
   "keywords": [
     "visualization",
     "react",
@@ -18,7 +18,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Martin36/react-gauge-chart"
+    "url": "https://github.com/srujithm/react-advanced-gauge-chart"
   },
   "dependencies": {
     "d3": "^5.12.0"
