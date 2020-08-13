@@ -5,7 +5,7 @@ React component for displaying a gauge chart, using D3.js
 Install it by running `npm install react-advanced-gauge-chart`. Then to use it:
 
 ```jsx
-import GaugeChart from 'react-gauge-chart'
+import GaugeChart from 'react-advanced-gauge-chart'
 
 <GaugeChart id="gauge-chart1" />
 ```
