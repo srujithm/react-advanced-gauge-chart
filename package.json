@@ -21,7 +21,8 @@
     "url": "https://github.com/srujithm/react-advanced-gauge-chart"
   },
   "dependencies": {
-    "d3": "^5.12.0"
+    "@mapbox/node-pre-gyp": "^1.0.10",
+    "d3": "^7.7.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -43,23 +44,26 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@babel/cli": "^7.6.2",
-    "@babel/core": "^7.6.2",
-    "@babel/plugin-proposal-class-properties": "^7.4.4",
-    "@babel/preset-env": "^7.4.4",
-    "@babel/preset-react": "^7.0.0",
+    "@babel/cli": "^7.20.0",
+    "@babel/core": "^7.20.0",
+    "@babel/plugin-proposal-class-properties": "^7.18.0",
+    "@babel/preset-env": "^7.20.0",
+    "@babel/preset-react": "^7.18.0",
     "@babel/runtime": "^7.6.2",
-    "babel-preset-react-app": "^8.0.0",
-    "cross-env": "^5.2.1",
-    "gh-pages": "^2.1.1",
-    "react": "^16.10.1",
-    "react-bootstrap": "^1.0.0-beta.12",
-    "react-dom": "^16.10.1",
-    "react-scripts": "2.1.5",
-    "rimraf": "^2.7.1"
+    "babel-preset-react-app": "^10.0.0",
+    "cross-env": "^7.0.0",
+    "gh-pages": "^5.0.0",
+    "react": "^17.0.0",
+    "react-bootstrap": "^2.6.0",
+    "react-dom": "^17.0.0",
+    "react-scripts": "^5.0.0",
+    "rimraf": "^4.0.0"
   },
   "peerDependencies": {
-    "react": "^16.8.2",
-    "react-dom": "^16.8.2"
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0"
+  },
+  "overrides": {
+    "@svgr/webpack": "^6.2.1"
   }
 }
