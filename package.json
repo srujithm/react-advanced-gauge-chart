@@ -1,6 +1,6 @@
 {
   "name": "react-advanced-gauge-chart",
-  "version": "0.2.7",
+  "version": "1.0.0",
   "main": "dist/index",
   "module": "dist/index",
   "typings": "dist/index",
@@ -21,11 +21,10 @@
     "url": "https://github.com/srujithm/react-advanced-gauge-chart"
   },
   "dependencies": {
-    "@mapbox/node-pre-gyp": "^1.0.10",
     "d3": "^7.7.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts --openssl-legacy-provider start",
     "prebuild": "rimraf dist",
     "build": "NODE_ENV=production babel src/lib --out-dir dist --copy-files",
     "build-page": "react-scripts build",
@@ -50,6 +49,7 @@
     "@babel/preset-env": "^7.20.0",
     "@babel/preset-react": "^7.18.0",
     "@babel/runtime": "^7.6.2",
+    "@mapbox/node-pre-gyp": "^1.0.10",
     "babel-preset-react-app": "^10.0.0",
     "cross-env": "^7.0.0",
     "gh-pages": "^5.0.0",
