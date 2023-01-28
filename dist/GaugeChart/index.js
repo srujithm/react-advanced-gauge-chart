@@ -1,18 +1,9 @@
-"use strict";
+import React, { useEffect, useRef } from 'react';
+import { arc, pie, select, easeElastic, scaleLinear, interpolateHsl, interpolateNumber } from 'd3';
+import PropTypes from 'prop-types';
 
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-var _react = _interopRequireWildcard(require("react"));
-var _d = require("d3");
-var _propTypes = _interopRequireDefault(require("prop-types"));
-require("./style.css");
-var _customHooks = _interopRequireDefault(require("./customHooks"));
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+// import './GaugeChart.module.css'
+import useDeepCompareEffect from './customHooks';
 /*
 GaugeChart creates a gauge chart using D3
 The chart is responsive and will have the same width as the "container"
@@ -33,30 +24,30 @@ var defaultStyle = {
 // Props that should cause an animation on update
 var animateNeedleProps = ['marginInPercent', 'arcPadding', 'percent', 'nrOfLevels', 'animDelay'];
 var GaugeChart = function GaugeChart(props) {
-  var svg = (0, _react.useRef)({});
-  var g = (0, _react.useRef)({});
-  var width = (0, _react.useRef)({});
-  var height = (0, _react.useRef)({});
-  var doughnut = (0, _react.useRef)({});
-  var needle = (0, _react.useRef)({});
-  var outerRadius = (0, _react.useRef)({});
-  var margin = (0, _react.useRef)({}); // = {top: 20, right: 50, bottom: 50, left: 50},
-  var container = (0, _react.useRef)({});
-  var nbArcsToDisplay = (0, _react.useRef)(0);
-  var colorArray = (0, _react.useRef)([]);
-  var arcChart = (0, _react.useRef)((0, _d.arc)());
-  var arcData = (0, _react.useRef)([]);
-  var pieChart = (0, _react.useRef)((0, _d.pie)());
-  var prevProps = (0, _react.useRef)(props);
-  (0, _react.useEffect)(function () {
+  var svg = useRef({});
+  var g = useRef({});
+  var width = useRef({});
+  var height = useRef({});
+  var doughnut = useRef({});
+  var needle = useRef({});
+  var outerRadius = useRef({});
+  var margin = useRef({}); // = {top: 20, right: 50, bottom: 50, left: 50},
+  var container = useRef({});
+  var nbArcsToDisplay = useRef(0);
+  var colorArray = useRef([]);
+  var arcChart = useRef(arc());
+  var arcData = useRef([]);
+  var pieChart = useRef(pie());
+  var prevProps = useRef(props);
+  useEffect(function () {
     setArcData(props, nbArcsToDisplay, colorArray, arcData);
     if (props.id) {
-      container.current = (0, _d.select)("#".concat(props.id));
+      container.current = select("#".concat(props.id));
       //Initialize chart
       initChart();
     }
   }, []);
-  (0, _customHooks.default)(function () {
+  useDeepCompareEffect(function () {
     if (props.nrOfLevels || prevProps.current.arcsLength.every(function (a) {
       return props.arcsLength.includes(a);
     }) || prevProps.current.colors.every(function (a) {
@@ -102,14 +93,13 @@ var GaugeChart = function GaugeChart(props) {
   var id = props.id,
     style = props.style,
     className = props.className;
-  return /*#__PURE__*/_react.default.createElement("div", {
+  return /*#__PURE__*/React.createElement("div", {
     id: id,
     className: className,
     style: style
   });
 };
-var _default = GaugeChart;
-exports.default = _default;
+export default GaugeChart;
 GaugeChart.defaultProps = {
   style: defaultStyle,
   marginInPercent: 0.05,
@@ -133,25 +123,25 @@ GaugeChart.defaultProps = {
   animateDuration: 3000
 };
 GaugeChart.propTypes = {
-  id: _propTypes.default.string.isRequired,
-  className: _propTypes.default.string,
-  style: _propTypes.default.object,
-  marginInPercent: _propTypes.default.number,
-  cornerRadius: _propTypes.default.number,
-  nrOfLevels: _propTypes.default.number,
-  percent: _propTypes.default.number,
-  arcPadding: _propTypes.default.number,
-  arcWidth: _propTypes.default.number,
-  arcsLength: _propTypes.default.array,
-  colors: _propTypes.default.array,
-  textColor: _propTypes.default.string,
-  needleColor: _propTypes.default.string,
-  needleBaseColor: _propTypes.default.string,
-  hideText: _propTypes.default.bool,
-  animate: _propTypes.default.bool,
-  formatTextValue: _propTypes.default.func,
-  fontSize: _propTypes.default.string,
-  animateDuration: _propTypes.default.number
+  id: PropTypes.string.isRequired,
+  className: PropTypes.string,
+  style: PropTypes.object,
+  marginInPercent: PropTypes.number,
+  cornerRadius: PropTypes.number,
+  nrOfLevels: PropTypes.number,
+  percent: PropTypes.number,
+  arcPadding: PropTypes.number,
+  arcWidth: PropTypes.number,
+  arcsLength: PropTypes.array,
+  colors: PropTypes.array,
+  textColor: PropTypes.string,
+  needleColor: PropTypes.string,
+  needleBaseColor: PropTypes.string,
+  hideText: PropTypes.bool,
+  animate: PropTypes.bool,
+  formatTextValue: PropTypes.func,
+  fontSize: PropTypes.string,
+  animateDuration: PropTypes.number
 };
 
 // This function update arc's datas when component is mounting or when one of arc's props is updated
@@ -209,8 +199,8 @@ var renderChart = function renderChart(resize, prevProps, width, margin, height,
 //This function returns the same number of colors
 var getColors = function getColors(props, nbArcsToDisplay) {
   var colors = props.colors;
-  var colorScale = (0, _d.scaleLinear)().domain([1, nbArcsToDisplay.current]).range([colors[0], colors[colors.length - 1]]) //Use the first and the last color as range
-  .interpolate(_d.interpolateHsl);
+  var colorScale = scaleLinear().domain([1, nbArcsToDisplay.current]).range([colors[0], colors[colors.length - 1]]) //Use the first and the last color as range
+  .interpolate(interpolateHsl);
   var colorArray = [];
   for (var i = 1; i <= nbArcsToDisplay.current; i++) {
     colorArray.push(colorScale(i));
@@ -240,8 +230,8 @@ var drawNeedle = function drawNeedle(resize, prevProps, props, width, needle, co
   }
   //Rotate the needle
   if (!resize && animate) {
-    needle.current.transition().delay(props.animDelay).ease(_d.easeElastic).duration(props.animateDuration).tween('progress', function () {
-      var currentPercent = (0, _d.interpolateNumber)(prevPercent, percent);
+    needle.current.transition().delay(props.animDelay).ease(easeElastic).duration(props.animateDuration).tween('progress', function () {
+      var currentPercent = interpolateNumber(prevPercent, percent);
       return function (percentOfPercent) {
         var progress = currentPercent(percentOfPercent);
         return container.current.select(".needle path").attr("d", calculateRotation(progress, outerRadius, width));

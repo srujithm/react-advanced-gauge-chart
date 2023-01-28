@@ -2,7 +2,6 @@ import React, {useEffect, useRef} from 'react'
 import { arc, pie, select, easeElastic, scaleLinear, interpolateHsl, interpolateNumber } from 'd3'
 import PropTypes from 'prop-types'
 
-import './style.css'
 import useDeepCompareEffect from './customHooks'
 /*
 GaugeChart creates a gauge chart using D3
