@@ -16,3 +16,8 @@ body {
   color: white;
 
 }
+
+.percent-text{
+  text-anchor: middle;
+  font-family: 'Roboto', sans-serif;
+}
